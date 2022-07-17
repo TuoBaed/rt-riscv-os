@@ -1,6 +1,9 @@
 #include "types.h"
 #include "platform.h"
 
+// 这个控制uart中寄存器的程序直接使用的是polling的技术，
+// 把interrupt一开始就关闭了
+
 /*
  * The UART control registers are memory-mapped at address UART0. 
  * This macro returns the address of one of the registers.
