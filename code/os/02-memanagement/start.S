@@ -14,13 +14,13 @@ _start:
 					# we park the hart
 
 	# Set all bytes in the BSS section to zero.
-	la	a0, _bss_start
+	la	a0, _bss_start		# _bss_start和_bss_end大概来自os.ld，但目前还不知道有啥作用，只是为了将该区域数据都初始化为0？
 	la	a1, _bss_end
-	bgeu	a0, a1, 2f
+	bgeu	a0, a1, 2f		# branch to label 2 if a0 >= a1, but what 2f means? 
 1:
 	sw	zero, (a0)
 	addi	a0, a0, 4
-	bltu	a0, a1, 1b
+	bltu	a0, a1, 1b		# branch to label 1 if a0 < a1, unsigned comaprsion but what 1b means?
 2:
 	# Setup stacks, the stack grows from bottom to top, so we put the
 	# stack pointer to the very end of the stack range.
