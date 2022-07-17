@@ -4,7 +4,7 @@ extern void uart_puts(char *s);
 void start_kernel(void)
 {
 	uart_init();
-	uart_puts("Hello, RVOS!\n");	// comment test
+	uart_puts("18");	// comment test
 
 	while (1) {}; // stop here!
 }

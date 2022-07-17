@@ -136,3 +136,83 @@ void panic(char *s)
 	printf("\n");
 	while(1){};
 }
+
+
+void convert(int number, int base, int *p) {
+	if (number == 0) {
+		return;
+	}
+	else {
+		int reminder = number % base;
+		number = number / base;
+		convert(number, base, p);
+		if (reminder < 10) {
+			uart_putc(reminder + 48);
+		}
+		else {
+			uart_putc(reminder - 10 + 'A');
+		}
+		*p = *p + 1;
+		return;
+	}
+}
+
+
+int myprintf(const char *format, ...) {
+	va_list vl;
+	va_start(vl, format);
+	char *p = format;	// pointer to format
+
+	uint32_t number_of_char = 0;	// record myprintf's return value
+	char ch;	// temp char value;
+	char char_temp;
+	int int_temp;
+	while((ch = *p)) {
+		if (ch != '%') {
+			uart_putc(ch);
+			number_of_char++;
+			p++;
+		}
+		else {
+			ch = *++p;
+			switch(ch) {
+				case 'c': {
+					char_temp = va_arg(vl, char);
+					uart_putc(char_temp);
+					number_of_char++;
+					p++;
+					break;
+				}
+				case 'd': {
+					int_temp = va_arg(vl, int);
+					convert(int_temp, 10, &number_of_char);
+					p++;
+					break;
+				}
+				case 'x': {
+					int_temp = va_arg(vl, int);
+					convert(int_temp, 16, &number_of_char);
+					p++;
+					break;
+				}
+				case 'o': {
+					int_temp = va_arg(vl, int);
+					convert(int_temp, 8, &number_of_char);
+					p++;
+					break;
+				}
+				case 's': {
+					char *p1 = va_arg(vl, char *);
+					for (; *p1 != '\0'; p1++) {
+						uart_putc(*p1);
+						number_of_char++;
+					}
+					p++;
+					break;
+				}
+			}
+		}
+	}
+
+	return number_of_char;
+}
