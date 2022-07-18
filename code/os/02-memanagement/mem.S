@@ -3,7 +3,7 @@
 HEAP_START: .word _heap_start
 
 .global HEAP_SIZE
-HEAP_SIZE: .word _heap_size
+HEAP_SIZE: .word _heap_size     # _heap_size define in os.ld
 
 .global TEXT_START
 TEXT_START: .word _text_start
