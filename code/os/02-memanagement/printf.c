@@ -138,7 +138,7 @@ void panic(char *s)
 }
 
 
-void convert(int number, int base, int *p) {
+void convert(int number, int base, uint32_t *p) {
 	if (number == 0) {
 		return;
 	}
@@ -161,7 +161,7 @@ void convert(int number, int base, int *p) {
 int myprintf(const char *format, ...) {
 	va_list vl;
 	va_start(vl, format);
-	char *p = format;	// pointer to format
+	const char *p = format;	// pointer to format
 
 	uint32_t number_of_char = 0;	// record myprintf's return value
 	char ch;	// temp char value;
@@ -177,7 +177,7 @@ int myprintf(const char *format, ...) {
 			ch = *++p;
 			switch(ch) {
 				case 'c': {
-					char_temp = va_arg(vl, char);
+					char_temp = (char)va_arg(vl, int);
 					uart_putc(char_temp);
 					number_of_char++;
 					p++;
